@@ -156,7 +156,14 @@ def create_reseña():
     new_id = cursor.lastrowid
     conn.close()
     return jsonify({"id_reseña": new_id, **data}), 201
-
+@app.route('/reseñas/<int:id>', methods=['GET'])
+def get_reseña(id):
+    conn = get_db_connection()
+    row = conn.execute('SELECT * FROM reseñas WHERE id_reseña = ?', (id,)).fetchone()
+    conn.close()
+    if row is None:
+        return jsonify({"error": "Reseña no encontrada"}), 404
+    return jsonify(dict(row))
 @app.route('/reseñas/<int:id>', methods=['DELETE'])
 def delete_reseña(id):
     conn = get_db_connection()
@@ -168,6 +175,40 @@ def delete_reseña(id):
     if deleted == 0:
         return jsonify({"error": "Reseña no encontrada"}), 404
     return jsonify({"message": "Reseña eliminada"})
+
+@app.route('/administradores', methods=['GET'])
+def get_administradores():
+    conn = get_db_connection()
+    rows = conn.execute('SELECT * FROM administrador').fetchall()
+    conn.close()
+    return jsonify([dict(r) for r in rows])
+
+@app.route('/administradores/<int:id>', methods=['GET'])
+def get_administrador(id):
+    conn = get_db_connection()
+    row = conn.execute('SELECT * FROM administrador WHERE id_admin = ?', (id,)).fetchone()
+    conn.close()
+    if row is None:
+        return jsonify({"error": "Administrador no encontrado"}), 404
+    return jsonify(dict(row))
+
+# PERSONA
+
+@app.route('/personas', methods=['GET'])
+def get_personas():
+    conn = get_db_connection()
+    rows = conn.execute('SELECT * FROM persona').fetchall()
+    conn.close()
+    return jsonify([dict(r) for r in rows])
+
+@app.route('/personas/<int:id>', methods=['GET'])
+def get_persona(id):
+    conn = get_db_connection()
+    row = conn.execute('SELECT * FROM persona WHERE id_person = ?', (id,)).fetchone()
+    conn.close()
+    if row is None:
+        return jsonify({"error": "Persona no encontrada"}), 404
+    return jsonify(dict(row))
 
 #  CALIFICACIONES
 
@@ -182,7 +223,14 @@ def get_calificaciones():
         rows = conn.execute('SELECT * FROM calificaciones').fetchall()
     conn.close()
     return jsonify([dict(r) for r in rows])
-
+@app.route('/calificaciones/<int:id>', methods=['GET'])
+def get_calificacion(id):
+    conn = get_db_connection()
+    row = conn.execute('SELECT * FROM calificaciones WHERE id_calificacion = ?', (id,)).fetchone()
+    conn.close()
+    if row is None:
+        return jsonify({"error": "Calificación no encontrada"}), 404
+    return jsonify(dict(row))
 @app.route('/calificaciones', methods=['POST'])
 def create_calificacion():
     data = request.get_json()
