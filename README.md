@@ -7,7 +7,7 @@ creamos el entorno virtual
 -ejecutamos la base de datos con el comando
 python init_db.py esto nos creara las tablas de la base de datos
 ejecutamos las depencias para iniciar:
-pip install -r ".\requiriments.txt"
+pip install -r ".\requirements.txt"
 -ejecutamos para la app de app.py
 -python .\app.py
 nos abrira el servidor local http://127.0.0.1:5000
