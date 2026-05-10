@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GameCritic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR NAV ══════════════ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="brand-icon">◈</span>
+    <span class="brand-name">GAME<br>CRITIC</span>
+  </div>
+
+  <div class="nav-section">
+    <span class="nav-label">CATÁLOGO</span>
+    <button class="nav-btn active" data-view="juegos">
+      <span class="nav-icon">⬡</span> Videojuegos
+    </button>
+    <button class="nav-btn" data-view="resenas">
+      <span class="nav-icon">◎</span> Reseñas
+    </button>
+    <button class="nav-btn" data-view="calificaciones">
+      <span class="nav-icon">◇</span> Calificaciones
+    </button>
+  </div>
+
+  <div class="nav-section" id="admin-section" style="display:none">
+    <span class="nav-label">ADMINISTRACIÓN</span>
+    <button class="nav-btn" data-view="usuarios">
+      <span class="nav-icon">⊙</span> Usuarios
+    </button>
+    <button class="nav-btn" data-view="logs">
+      <span class="nav-icon">≋</span> Logs
+    </button>
+  </div>
+
+  <div class="sidebar-footer">
+    <div id="user-info" style="display:none">
+      <div class="user-chip">
+        <span class="user-avatar" id="user-avatar">U</span>
+        <div class="user-meta">
+          <span class="user-name" id="user-name-display">–</span>
+          <span class="user-role" id="user-role-display">–</span>
+        </div>
+      </div>
+      <button class="btn-logout" id="btn-logout">↩ Salir</button>
+    </div>
+    <button class="btn-auth" id="btn-show-auth">Iniciar sesión</button>
+  </div>
+</nav>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main class="main-content">
+
+  <!-- Header -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <button class="hamburger" id="hamburger">☰</button>
+      <h1 class="page-title" id="page-title">Videojuegos</h1>
+    </div>
+    <div class="top-bar-right">
+      <button class="btn-add" id="btn-add" style="display:none">+ Nuevo</button>
+    </div>
+  </header>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Views -->
+  <section class="view active" id="view-juegos">
+    <div class="grid-cards" id="juegos-grid"></div>
+  </section>
+
+  <section class="view" id="view-resenas">
+    <div class="table-wrap">
+      <table class="data-table" id="resenas-table">
+        <thead><tr><th>#</th><th>Contenido</th><th>Fecha</th><th>Usuario</th><th>Juego</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="view-calificaciones">
+    <div class="table-wrap">
+      <table class="data-table" id="cal-table">
+        <thead><tr><th>#</th><th>Puntuación</th><th>Usuario</th><th>Juego</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="view-usuarios">
+    <div class="table-wrap">
+      <table class="data-table" id="users-table">
+        <thead><tr><th>#</th><th>Nombre</th><th>Email</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="view-logs">
+    <div class="table-wrap">
+      <table class="data-table" id="logs-table">
+        <thead><tr><th>Timestamp</th><th>Usuario</th><th>Acción</th><th>IP</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══════════════ MODAL AUTH ══════════════ -->
+<div class="modal-overlay" id="modal-auth">
+  <div class="modal">
+    <button class="modal-close" id="close-auth">✕</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Iniciar sesión</button>
+      <button class="auth-tab" data-tab="registro">Registrarse</button>
+    </div>
+
+    <div class="auth-panel active" id="panel-login">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="usuario@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="login-password" placeholder="••••••••"/>
+      </div>
+      <button class="btn-primary full" id="btn-login">Entrar</button>
+    </div>
+
+    <div class="auth-panel" id="panel-registro">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="reg-nombre" placeholder="Tu nombre"/>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="usuario@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Contraseña <small>(mín. 8 caracteres)</small></label>
+        <input type="password" id="reg-password" placeholder="••••••••"/>
+      </div>
+      <div class="form-group">
+        <label>Edad <small>(opcional)</small></label>
+        <input type="number" id="reg-edad" placeholder="22" min="1" max="120"/>
+      </div>
+      <button class="btn-primary full" id="btn-registro">Crear cuenta</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MODAL JUEGO ══════════════ -->
+<div class="modal-overlay" id="modal-juego">
+  <div class="modal">
+    <button class="modal-close" id="close-juego">✕</button>
+    <h2 class="modal-title" id="juego-modal-title">Nuevo videojuego</h2>
+    <div class="form-group">
+      <label>Título *</label>
+      <input type="text" id="juego-titulo" placeholder="Ej: Hollow Knight"/>
+    </div>
+    <div class="form-group">
+      <label>Descripción</label>
+      <textarea id="juego-descripcion" rows="3" placeholder="Descripción breve…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Género</label>
+      <input type="text" id="juego-genero" placeholder="RPG, Acción, Aventura…"/>
+    </div>
+    <div class="form-group">
+      <label>Fecha de lanzamiento</label>
+      <input type="date" id="juego-fecha"/>
+    </div>
+    <div class="form-group">
+      <label>URL de imagen <small>(portada del juego)</small></label>
+      <input type="url" id="juego-imagen" placeholder="https://ejemplo.com/portada.jpg"/>
+      <div id="juego-imagen-preview" style="display:none;margin-top:10px">
+        <img id="juego-img-thumb" src="" alt="preview"
+             style="width:100%;height:150px;object-fit:cover;border-radius:6px;border:1px solid var(--border)"/>
+      </div>
+    </div>
+    <input type="hidden" id="juego-edit-id"/>
+    <button class="btn-primary full" id="btn-save-juego">Guardar</button>
+  </div>
+</div>
+
+<!-- ══════════════ MODAL DETALLE JUEGO ══════════════ -->
+<div class="modal-overlay" id="modal-detalle">
+  <div class="modal modal-wide">
+    <button class="modal-close" id="close-detalle">✕</button>
+    <div class="detalle-header">
+      <h2 class="detalle-title" id="detalle-titulo">–</h2>
+      <span class="badge-genero" id="detalle-genero">–</span>
+    </div>
+    <div id="detalle-imagen-wrap" style="display:none;margin-bottom:14px">
+      <img id="detalle-imagen" src="" alt="portada"
+           style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;border:1px solid var(--border)"/>
+    </div>
+    <p class="detalle-desc" id="detalle-desc">–</p>
+    <div class="detalle-meta">
+      <span id="detalle-fecha">–</span>
+      <span class="score-pill" id="detalle-score">– / 10</span>
+    </div>
+    <hr class="divider"/>
+    <h3 class="section-sub">Reseñas</h3>
+    <div id="detalle-resenas"></div>
+    <div id="detalle-form-resena" style="display:none" class="resena-form">
+      <textarea id="nueva-resena-texto" rows="3" placeholder="Escribe tu reseña…"></textarea>
+      <div class="resena-actions">
+        <div class="puntuacion-wrap">
+          <label>Puntuación (1-10)</label>
+          <input type="number" id="nueva-puntuacion" min="1" max="10" value="8"/>
+        </div>
+        <button class="btn-primary" id="btn-enviar-resena">Publicar</button>
+      </div>
+    </div>
+    <input type="hidden" id="detalle-juego-id"/>
+  </div>
+</div>
+
+<!-- ══════════════ MODAL RESEÑA ══════════════ -->
+<div class="modal-overlay" id="modal-resena">
+  <div class="modal">
+    <button class="modal-close" id="close-resena">✕</button>
+    <h2 class="modal-title">Nueva reseña</h2>
+    <div class="form-group">
+      <label>Juego (ID)</label>
+      <input type="number" id="resena-id-juego" min="1"/>
+    </div>
+    <div class="form-group">
+      <label>Contenido</label>
+      <textarea id="resena-contenido" rows="4" placeholder="Tu reseña…"></textarea>
+    </div>
+    <button class="btn-primary full" id="btn-save-resena">Publicar</button>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
