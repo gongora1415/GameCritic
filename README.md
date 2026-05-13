@@ -48,53 +48,6 @@ http://127.0.0.1:5000/logs
 <img width="306" height="255" alt="image" src="https://github.com/user-attachments/assets/fc3ca783-3b6e-498f-ae9c-50518980f3f3" />
 
 http://127.0.0.1:5000/videojuegos/2/metadata
-GameCritic — API REST + SPA Frontend (MVC)
-Estructura del proyecto
-gamecritic/
-│
-├── app.py                  ← Punto de entrada · rutas Flask (Vista HTTP)
-├── init_db.py              ← Setup SQLite + helpers bcrypt
-├── requirements.txt
-├── database.db             ← SQLite (copiar aquí el archivo original)
-│
-├── models/                 ── MODELO ──────────────────────────────────
-│   ├── __init__.py
-│   ├── database.py         ← Conexiones SQLite y MongoDB
-│   ├── usuario.py          ← CRUD tabla usuarios + persona
-│   ├── videojuego.py       ← CRUD tabla videojuegos + metadata MongoDB
-│   ├── resena.py           ← CRUD tablas resenas y calificaciones
-│   ├── log.py              ← Colección logs_actividad (MongoDB)
-│   └── token.py            ← Colección tokens_jwt (MongoDB) · JWT
-│
-├── controllers/            ── CONTROLADOR ──────────────────────────────
-│   ├── __init__.py
-│   ├── auth_controller.py        ← registro / login / logout
-│   ├── usuario_controller.py     ← listar / obtener / eliminar / perfil
-│   ├── videojuego_controller.py  ← CRUD juegos + metadata
-│   ├── resena_controller.py      ← CRUD reseñas y calificaciones
-│   └── log_controller.py         ← logs + admin (administradores/personas)
-│
-└── views/                  ── VISTA ────────────────────────────────────
-    ├── json_view.py          ← Serialización JSON (ObjectId, datetime)
-    ├── auth_decorators.py    ← @token_required / @admin_required
-    ├── templates/
-    │   └── index.html        ← SPA frontend completo
-    └── static/ (servido por Flask)
-        ├── css/style.css     ← Diseño editorial oscuro
-        └── js/app.js         ← Lógica SPA (fetch API, vistas dinámicas)
-Cómo ejecutar
-# 1. Instalar dependencias
-pip install -r requirements.txt
-
-# 2. Copiar la base de datos original
-cp /ruta/a/database.db .
-
-# (Opcional) Reinicializar la BD con datos de prueba
-python init_db.py
-
-# 3. Levantar el servidor
-python app.py
-Abrir http://localhost:5000 en el navegador.
 
 Credenciales de prueba
 Email	Contraseña	Rol
