@@ -50,10 +50,14 @@ http://127.0.0.1:5000/logs
 http://127.0.0.1:5000/videojuegos/2/metadata
 
 Credenciales de prueba
+
+
 Email	Contraseña	Rol
 admin@games.com	admin123	Admin
 juan@games.com	juan456	User
+
 Flujo MVC
+
 Request HTTP
     │
     ▼
